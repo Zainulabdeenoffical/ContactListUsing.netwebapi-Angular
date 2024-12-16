@@ -1,0 +1,17 @@
+@if (contacts$ | async;as contacts) {
+
+@if (contacts.length>0) {
+
+  @for (item of contacts; track $index) {
+    <p>{{item.name}}</p>
+    <p>{{item.email}}</p>
+    <p>{{item.phoneNumber}}</p>
+  }
+
+}
+@else {
+  <p>No Contacts Found...</p>
+}
+
+
+}

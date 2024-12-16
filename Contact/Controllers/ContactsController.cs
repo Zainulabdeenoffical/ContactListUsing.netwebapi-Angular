@@ -1,6 +1,8 @@
 ﻿using Contact.Data;
+using Contact.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Contact.Controllers
 {
@@ -21,6 +23,24 @@ namespace Contact.Controllers
         {
          var contacts =  dbContexts.contacts.ToList();
             return Ok(contacts);
+        }
+
+        [HttpPost]
+        public IActionResult addContact(AddContactRequest request )
+        {
+            var domainModelContact = new Contact.Models.Domain.Contact
+            {
+                ID = Guid.NewGuid(),
+                Name = request.Name,
+                Email = request.Email,
+                PhoneNumber = request.PhoneNumber,
+                favouriteContact = request.favouriteContact,
+
+            };
+
+            dbContexts.contacts.Add(domainModelContact);
+            dbContexts.SaveChanges();
+            return Ok(domainModelContact);
         }
     }
 }

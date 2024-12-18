@@ -18,15 +18,15 @@ namespace Contact.Controllers
         }
 
         [HttpGet]
-         
+
         public IActionResult GetAllContatcs()
         {
-         var contacts =  dbContexts.contacts.ToList();
+            var contacts = dbContexts.contacts.ToList();
             return Ok(contacts);
         }
 
         [HttpPost]
-        public IActionResult addContact(AddContactRequest request )
+        public IActionResult addContact(AddContactRequest request)
         {
             var domainModelContact = new Contact.Models.Domain.Contact
             {
@@ -41,6 +41,21 @@ namespace Contact.Controllers
             dbContexts.contacts.Add(domainModelContact);
             dbContexts.SaveChanges();
             return Ok(domainModelContact);
+        }
+
+        [HttpDelete]
+        [Route("{ID=Guid}")]
+        public IActionResult deleteContact (Guid ID)
+        {
+           var contact =  dbContexts.contacts.Find(ID);
+            if (contact is not null)
+            {
+                dbContexts.contacts.Remove(contact);
+                dbContexts.SaveChanges();
+            }
+            return Ok();
+
+
         }
     }
 }

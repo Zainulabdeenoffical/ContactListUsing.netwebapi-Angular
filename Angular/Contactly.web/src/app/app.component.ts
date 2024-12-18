@@ -18,7 +18,7 @@ export class AppComponent {
 
   ContactForm = new FormGroup({
     name:new FormControl<String>(''),
-    email:new FormControl<String | null>('Null'),
+    email:new FormControl<String | null>(null),
     phoneNumber:new FormControl <String>(''),
     favouriteContact: new FormControl <boolean>(false)
 
@@ -26,8 +26,24 @@ export class AppComponent {
 
   onFormSubmint()
   {
-    console.log(this.ContactForm.value)
+   const AddContactRequest = {
+    name:this.ContactForm.value.name,
+    email:this.ContactForm.value.email,
+    phoneNumber:this.ContactForm.value.phoneNumber,
+    favouriteContact :this.ContactForm.value.favouriteContact
+    
   }
+  this.htpp.post('https://localhost:7268/api/Contacts',AddContactRequest)
+  .subscribe({
+    next:(value) =>{
+      console.log(value);
+     this.contacts$ = this.getContacts();
+     this.ContactForm.reset();
+    } 
+      
+    
+  })
+}
 
   private getContacts():Observable<Contact[]>
   {
